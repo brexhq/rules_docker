@@ -30,10 +30,17 @@ def go_deps():
     'repositories' in //repositories:repositories.bzl have been imported
     already.
     """
-    go_rules_dependencies()
-    go_register_toolchains()
-    gazelle_dependencies()
     excludes = native.existing_rules().keys()
+    # go_register_toolchains can only be called once
+    # so we check that we only call it if it hasn't been before
+    sdk_kinds = ("_go_download_sdk", "_go_host_sdk", "_go_local_sdk", "_go_wrap_sdk")
+    existing_rules = native.existing_rules()
+    sdk_rules = [r for r in existing_rules.values() if r["kind"] in sdk_kinds]
+    if len(sdk_rules) == 0:
+        go_rules_dependencies()
+        go_register_toolchains(version = "1.17.6")
+    
+    gazelle_dependencies()
     if "com_github_google_go_containerregistry" not in excludes:
         go_repository(
             name = "com_github_google_go_containerregistry",
