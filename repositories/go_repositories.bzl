@@ -31,6 +31,8 @@ def go_deps():
     already.
     """
     excludes = native.existing_rules().keys()
+    # go_register_toolchains can only be called once
+    # so we check that we only call it if it hasn't been before
     sdk_kinds = ("_go_download_sdk", "_go_host_sdk", "_go_local_sdk", "_go_wrap_sdk")
     existing_rules = native.existing_rules()
     sdk_rules = [r for r in existing_rules.values() if r["kind"] in sdk_kinds]
