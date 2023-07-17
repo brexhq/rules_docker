@@ -38,6 +38,7 @@ py_binary(
     srcs_version = "PY2AND3",
     visibility = ["//visibility:public"],
     deps = [":build_tar_lib"],
+    imports = ["io_bazel_rules_docker"],
 )
 
 py_library(
