@@ -20,13 +20,6 @@ load(
     docker_toolchain_configure = "toolchain_configure",
 )
 
-docker_toolchain_configure(
-    name = "docker_config",
-    docker_path = "/usr/bin/docker",
-)
-
-# Consumers shouldn't need to do this themselves once WORKSPACE is
-# instantiated recursively.
 http_archive(
     name = "platforms",
     sha256 = "079945598e4b6cc075846f7fd6a9d0857c33a7afc0de868c2ccb96405225135d",
@@ -35,6 +28,14 @@ http_archive(
         "https://github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
     ],
 )
+
+docker_toolchain_configure(
+    name = "docker_config",
+    docker_path = "/usr/bin/docker",
+)
+
+# Consumers shouldn't need to do this themselves once WORKSPACE is
+# instantiated recursively.
 load(
     "//repositories:repositories.bzl",
     container_repositories = "repositories",
